@@ -23,10 +23,22 @@ public class Team {
     private Integer teamId;
     private String teamName;
     private String level;
-    @ManyToMany(mappedBy = "teams")
-    private Set<Student> students = new HashSet<>();
     @ManyToMany(mappedBy = "team_s")
-    private Set<Teacher> teacher_s = new HashSet<>();
+    private Set<Student> students = new HashSet<>();
+    @ManyToMany
+    @JoinTable(
+            name = "Teacher_Team",
+            joinColumns = @JoinColumn(name = "team_id"),
+            inverseJoinColumns = @JoinColumn(name = "teacher_id")
+    )
+    private Set<Teacher> teachers = new HashSet<>();
+    @ManyToMany
+    @JoinTable(
+            name = "Science_Team",
+            joinColumns = @JoinColumn(name = "team_id"),
+            inverseJoinColumns = @JoinColumn(name = "science_id")
+    )
+    private Set<Science> sciences = new HashSet<>();
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private LocalDateTime deletedAt;

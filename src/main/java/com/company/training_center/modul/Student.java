@@ -18,10 +18,10 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Student {
+public class
+Student {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "student_id")
     private Integer id;
     private String firstName;
     private String lastName;
@@ -34,27 +34,15 @@ public class Student {
     private String password;
     private String school;
     private String birthday;
-    @OneToOne(
-            mappedBy = "student",
-            cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY,
-            orphanRemoval = true
-    )
+    @OneToOne(mappedBy = "student")
     private Payment payment;
-    @ManyToMany
-    @JoinTable(
-            name = "Student_Science",
-            joinColumns = @JoinColumn(name = "student_id"),
-            inverseJoinColumns = @JoinColumn(name = "science_id")
-    )
-    private Set<Science> sciences = new HashSet<>();
     @ManyToMany
     @JoinTable(
             name = "Student_Teams",
             joinColumns = @JoinColumn(name = "student_id"),
             inverseJoinColumns = @JoinColumn(name = "team_id")
     )
-    private Set<Team> teams = new HashSet<>();
+    private Set<Team> team_s = new HashSet<>();
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private LocalDateTime deletedAt;

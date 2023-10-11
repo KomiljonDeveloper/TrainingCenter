@@ -8,6 +8,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Set;
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -20,7 +22,7 @@ public class TeacherDto {
     @NotBlank(message = "The object is not null and the trimmed length is greater than zero.")
     private String lastName;
     @NotBlank(message = "The object is not null and the trimmed length is greater than zero.")
-    private String fartherName;
+    private String fatherName;
     @NotBlank(message = "The object is not null and the trimmed length is greater than zero.")
     @Size(max = 13,min = 13,message = "This field can be length equal 13")
     private String phoneNumber;
@@ -28,6 +30,5 @@ public class TeacherDto {
     private String username;
     @NotBlank(message = "The object is not null and the trimmed length is greater than zero.")
     private String password;
-    private ScienceDto sciences;
-    private TeamDto groups;
+
 }

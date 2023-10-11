@@ -11,12 +11,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.crypto.spec.OAEPParameterSpec;
 import java.util.Optional;
+import java.util.Set;
 
 @Repository
 public interface TeamRepository extends JpaRepository<Team,Integer> {
 
     Optional<Team> findByTeamIdAndDeletedAtIsNull(Integer id);
-
+    Optional<Set<Team>> findAllByTeamIdAndDeletedAtIsNull(Integer id);
     @Query(
             value = "select * from team as t where " +
                     "t.team_id = coalesce(:id,t.team_id) and " +

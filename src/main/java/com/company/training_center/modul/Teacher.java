@@ -22,25 +22,15 @@ public class Teacher {
     private Integer id;
     private String firstName;
     private String lastName;
-    private String fartherName;
+    private String fatherName;
     private String phoneNumber;
     @Column(name = "username",unique = true)
     private String username;
     private String password;
-    @OneToOne(
-            mappedBy = "teacher",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true,
-            fetch = FetchType.LAZY
-    )
+    @OneToOne(mappedBy = "teacher")
     private Bio bio;
-    @ManyToMany
-    @JoinTable(
-            name = "Teacher_Team",
-            joinColumns = @JoinColumn(name = "teacher_id"),
-            inverseJoinColumns = @JoinColumn(name = "team_id")
-    )
-    private Set<Team> team_s = new HashSet<>();
+    @ManyToMany(mappedBy = "teachers")
+    private Set<Team> teams = new HashSet<>();
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private LocalDateTime deletedAt;

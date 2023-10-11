@@ -20,5 +20,5 @@ public class ScienceDto {
     @NotBlank(message = "The object is not null and the trimmed length is greater than zero.")
     private String room;
     @NotBlank(message = "The object is not null and the trimmed length is greater than zero.")
-    private LocalDateTime time;
+    private String time;
 }

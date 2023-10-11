@@ -32,7 +32,7 @@ public class TeamController implements SimpleCrUD<TeamDto, Integer> {
 
     @Override
     @PutMapping
-    public ResponseDto<TeamDto> update(@RequestBody @Valid TeamDto dto, @RequestParam(value = "id") Integer id) {
+    public ResponseDto<TeamDto> update(@RequestBody TeamDto dto, @RequestParam(value = "id") Integer id) {
         return this.teamservice.update(dto,id);
     }
 

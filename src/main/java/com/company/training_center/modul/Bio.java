@@ -20,8 +20,8 @@ public class Bio {
     private String bioName;
     private String ext;
     private byte [] data;
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "bio_id")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "teacher_id",referencedColumnName = "id")
     private Teacher teacher;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

@@ -24,8 +24,11 @@ public class Science {
     private Integer id;
     private String scienceName;
     private String room;
-    private LocalDateTime time;
+    private String time;
     @ManyToMany(mappedBy = "sciences")
-    private Set<Student> students = new HashSet<>();
+    private Set<Team> teams = new HashSet<>();
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+    private LocalDateTime deletedAt;
 
 }

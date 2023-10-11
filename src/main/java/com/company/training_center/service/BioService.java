@@ -3,6 +3,7 @@ package com.company.training_center.service;
 import com.company.training_center.dto.SimpleFileCRUD;
 import com.company.training_center.modul.Bio;
 import com.company.training_center.repository.BioRepository;
+import com.company.training_center.repository.TeacherRepository;
 import com.company.training_center.util.BioUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,20 +19,25 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class BioService implements SimpleFileCRUD<MultipartFile> {
     private final BioRepository bioRepository;
+    private final TeacherRepository teacherRepository;
     @Override
-    public ResponseEntity<?> upload(MultipartFile file) {
-        try {
-            Bio build = Bio.builder()
-                    .bioName(file.getOriginalFilename())
-                    .ext(file.getContentType())
-                    .data(BioUtils.compressBio(file.getBytes()))
-                    .build();
-            build.setCreatedAt(LocalDateTime.now());
-            this.bioRepository.save(build);
-            return ResponseEntity.status(HttpStatus.OK).body(String.format("Bio has been successfully installed : %s",build.getBioName()));
+    public ResponseEntity<?> upload(Integer id,MultipartFile file) {
+
+         return  this.teacherRepository.findByIdAndDeletedAtIsNull(id).map(teacher -> {
+                try {
+                Bio build = Bio.builder()
+                        .bioName(file.getOriginalFilename())
+                        .ext(file.getContentType())
+                        .data(BioUtils.compressBio(file.getBytes()))
+                        .build();
+                build.setCreatedAt(LocalDateTime.now());
+                build.setTeacher(teacher);
+                this.bioRepository.save(build);
+                return ResponseEntity.status(HttpStatus.OK).body(String.format("Bio has been successfully installed : %s", build.getBioName()));
         } catch (IOException e) {
             return ResponseEntity.badRequest().body("Failed to install bio");
         }
+        }).orElse(ResponseEntity.badRequest().body("Teacher is not found!"));
     }
 
     @Override

@@ -33,7 +33,7 @@ public class StudentController implements SimpleCrUD<StudentDto,Integer> {
 
     @Override
     @PutMapping("/{id}")
-    public ResponseDto<StudentDto> update(@RequestBody @Valid StudentDto dto, @PathVariable Integer id) {
+    public ResponseDto<StudentDto> update(@RequestBody StudentDto dto, @PathVariable Integer id) {
         return this.studentService.update(dto, id);
     }
 

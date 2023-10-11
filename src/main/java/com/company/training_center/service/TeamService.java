@@ -4,7 +4,11 @@ import com.company.training_center.assistant.TeamAssistant;
 import com.company.training_center.dto.TeamDto;
 import com.company.training_center.dto.ResponseDto;
 import com.company.training_center.dto.SimpleCrUD;
+import com.company.training_center.modul.Science;
+import com.company.training_center.modul.Teacher;
 import com.company.training_center.modul.Team;
+import com.company.training_center.repository.ScienceRepository;
+import com.company.training_center.repository.TeacherRepository;
 import com.company.training_center.repository.TeamRepository;
 import com.company.training_center.service.mapper.TeamMapper;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +18,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -23,29 +28,32 @@ public class TeamService implements SimpleCrUD<TeamDto,Integer> {
     private final TeamMapper teamMapper;
     private final TeamRepository teamRepository;
     private final TeamAssistant teamAssistant;
+    private final TeacherRepository teacherRepository;
+    private final ScienceRepository scienceRepository;
 
 
     @Override
     public ResponseDto<TeamDto> create(TeamDto dto) {
-        return Optional.ofNullable(this.teamMapper.toEntity(dto)).map(team ->{
             try {
+                Team team = this.teamMapper.toEntity(dto);
                 team.setCreatedAt(LocalDateTime.now());
+                team.setSciences(this.scienceRepository.findAllByIdAndDeletedAtIsNull(dto.getScienceId()));
+                team.setTeachers(this.teacherRepository.findAllByIdAndDeletedAtIsNull(dto.getTeacherId()));
                 this.teamRepository.save(team);
                 return ResponseDto.<TeamDto>builder()
                         .success(true)
                         .message("OK")
                         .data(this.teamMapper.toDto(team))
                         .build();
+
+
             }catch (Exception e){
                 return  ResponseDto.<TeamDto>builder()
                         .message("Error : "+e.getMessage())
                         .code(-2)
                         .build();
             }
-        }).orElse(ResponseDto.<TeamDto>builder()
-                .message("The operation could not be performed!")
-                .code(-1)
-                .build());
+
     }
 
     @Override

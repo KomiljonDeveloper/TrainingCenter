@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
 @RestController
+@RequestMapping("science")
 public record ScienceController(ScienceService scienceService) implements SimpleCrUD<ScienceDto,Integer> {
     @Override
     @PostMapping
@@ -26,7 +27,7 @@ public record ScienceController(ScienceService scienceService) implements Simple
 
     @Override
     @PutMapping("/{id}")
-    public ResponseDto<ScienceDto> update(@RequestBody @Valid ScienceDto dto, @PathVariable Integer id) {
+    public ResponseDto<ScienceDto> update(@RequestBody ScienceDto dto, @PathVariable Integer id) {
         return this.scienceService.update(dto, id);
     }
 

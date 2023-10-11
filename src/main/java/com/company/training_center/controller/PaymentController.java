@@ -29,7 +29,7 @@ public record PaymentController(PaymentService paymentService) implements Simple
 
     @Override
     @PutMapping("/{id}")
-    public ResponseDto<PaymentDto> update(@RequestBody @Valid PaymentDto dto,@PathVariable Integer id) {
+    public ResponseDto<PaymentDto> update(@RequestBody PaymentDto dto,@PathVariable Integer id) {
         return this.paymentService.update(dto, id);
     }
 

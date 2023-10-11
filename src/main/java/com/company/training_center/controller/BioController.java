@@ -17,8 +17,8 @@ public class BioController implements SimpleFileCRUD<MultipartFile> {
 
     @Override
     @PostMapping
-    public ResponseEntity<?> upload(@RequestParam(value = "bio") MultipartFile file) {
-        return this.bioService.upload(file);
+    public ResponseEntity<?> upload(@RequestParam(value = "id") Integer id ,@RequestParam(value = "bio") MultipartFile file) {
+        return this.bioService.upload(id,file);
     }
 
     @Override
