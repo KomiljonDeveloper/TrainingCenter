@@ -11,7 +11,7 @@ import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
-public class TeacherAssistant {
+public class  TeacherAssistant {
 
     private final TeacherRepository teacherRepository;
 

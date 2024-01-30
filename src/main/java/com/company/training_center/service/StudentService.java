@@ -4,10 +4,13 @@ import com.company.training_center.assistant.StudentAssistant;
 import com.company.training_center.dto.ResponseDto;
 import com.company.training_center.dto.SimpleCrUD;
 import com.company.training_center.dto.StudentDto;
+import com.company.training_center.modul.Payment;
 import com.company.training_center.modul.Student;
+import com.company.training_center.repository.PaymentRepository;
 import com.company.training_center.repository.ScienceRepository;
 import com.company.training_center.repository.StudentRepository;
 import com.company.training_center.repository.TeamRepository;
+import com.company.training_center.service.mapper.PaymentMapper;
 import com.company.training_center.service.mapper.StudentMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -25,6 +28,8 @@ public class StudentService implements SimpleCrUD<StudentDto, Integer> {
     private final StudentAssistant studentAssistant;
     private final StudentRepository studentRepository;
     private final TeamRepository teamRepository;
+    private final PaymentRepository paymentRepository;
+    private final PaymentMapper paymentMapper;
 
     @Override
     public ResponseDto<StudentDto> create(StudentDto dto) {
@@ -54,6 +59,9 @@ public class StudentService implements SimpleCrUD<StudentDto, Integer> {
     @Override
     public ResponseDto<Page<StudentDto>> get(Map<String, String> params) {
         Page<StudentDto> map = this.studentAssistant.assistantMethod(params).map(this.studentMapper::toDto);
+        for (StudentDto studentDto : map.toSet()) {
+            studentDto.setPayment(this.paymentMapper.toDto(this.paymentRepository.findByPayment(studentDto.getStudentId())));
+        }
         if (map.isEmpty()) {
             return ResponseDto.<Page<StudentDto>>builder()
                     .code(-1)

@@ -18,7 +18,6 @@ public class ScienceDto {
     @NotBlank(message = "The object is not null and the trimmed length is greater than zero.")
     private String scienceName;
     @NotBlank(message = "The object is not null and the trimmed length is greater than zero.")
-    private String room;
-    @NotBlank(message = "The object is not null and the trimmed length is greater than zero.")
-    private String time;
+    private String date;
+    private Boolean isAttend;
 }

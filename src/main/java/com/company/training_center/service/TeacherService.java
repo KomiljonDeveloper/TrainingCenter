@@ -5,6 +5,7 @@ import com.company.training_center.dto.ResponseDto;
 import com.company.training_center.dto.SimpleCrUD;
 import com.company.training_center.dto.TeacherDto;
 import com.company.training_center.modul.Teacher;
+import com.company.training_center.repository.BioRepository;
 import com.company.training_center.repository.TeacherRepository;
 import com.company.training_center.service.mapper.TeacherMapper;
 import com.company.training_center.service.validation.TeacherValidation;
@@ -13,7 +14,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Map;
 
 @Service
@@ -23,6 +23,7 @@ public class TeacherService implements SimpleCrUD<TeacherDto, Integer> {
     private final TeacherRepository teacherRepository;
     private final TeacherMapper teacherMapper;
     private final TeacherAssistant teacherAssistant;
+    private final BioRepository bioRepository;
 
 
     @Override
@@ -48,6 +49,7 @@ public class TeacherService implements SimpleCrUD<TeacherDto, Integer> {
     public ResponseDto<Page<TeacherDto>> get(Map<String, String> params) {
         try {
             Page<TeacherDto> map = this.teacherAssistant.assistantMethod(params).map(this.teacherMapper::toDto);
+
             if (map.isEmpty()) {
                 return ResponseDto.<Page<TeacherDto>>builder()
                         .code(-1)
@@ -73,6 +75,7 @@ public class TeacherService implements SimpleCrUD<TeacherDto, Integer> {
     public ResponseDto<TeacherDto> update(TeacherDto dto, Integer id) {
         try {
             return this.teacherRepository.findByIdAndDeletedAtIsNull(id).map(teacher -> {
+                this.bioRepository.findByBio(id).setDeletedAt(LocalDateTime.now());
                 teacher.setUpdatedAt(LocalDateTime.now());
                 return ResponseDto.<TeacherDto>builder()
                         .success(true)
@@ -94,6 +97,7 @@ public class TeacherService implements SimpleCrUD<TeacherDto, Integer> {
     @Override
     public ResponseDto<TeacherDto> delete(Integer id) {
         return this.teacherRepository.findByIdAndDeletedAtIsNull(id).map(teacher -> {
+            this.bioRepository.findByBio(id).setDeletedAt(LocalDateTime.now());
             teacher.setDeletedAt(LocalDateTime.now());
             return ResponseDto.<TeacherDto>builder()
                     .success(true)

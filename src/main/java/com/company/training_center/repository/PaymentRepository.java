@@ -14,6 +14,11 @@ import java.util.Optional;
 public interface PaymentRepository extends JpaRepository<Payment,Integer> {
 
     Optional<Payment> findByIdAndDeletedAtIsNull(Integer integer);
+    @Query(
+            value = "select * from payment where student_id = :id",
+            nativeQuery = true
+    )
+    Payment findByPayment(@Param(value = "id") Integer id);
 
     @Query(
             value = "select * from payment as p where " +

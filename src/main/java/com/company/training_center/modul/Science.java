@@ -23,8 +23,8 @@ public class Science {
     @GeneratedValue(generator = "science_id_seq")
     private Integer id;
     private String scienceName;
-    private String room;
-    private String time;
+    private LocalDateTime date;
+    private Boolean isAttend;
     @ManyToMany(mappedBy = "sciences")
     private Set<Team> teams = new HashSet<>();
     private LocalDateTime createdAt;
